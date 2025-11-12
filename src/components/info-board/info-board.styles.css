@@ -1,0 +1,18 @@
+.info-board {
+  background-color: rgba(188, 188, 188, 0.6);
+  padding: 20px;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 8px;
+}
+
+.info-board-title{
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+@media (max-width: 930px){
+  .info-board{
+    max-width: 100%;
+  }
+}

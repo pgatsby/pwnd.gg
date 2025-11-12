@@ -1,0 +1,9 @@
+.feed-container {
+  width: 100%;
+  max-width: 400px;
+}
+
+.feed-title{
+    font-size: 1.5rem;
+    font-weight: 800;
+}

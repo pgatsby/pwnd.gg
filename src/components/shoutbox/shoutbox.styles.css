@@ -1,0 +1,98 @@
+.shoutbox {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.shoutbox-header {
+  background-color: var(--secondary-bg-color);
+  padding: 15px 20px;
+}
+
+.shoutbox-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.shoutbox-messages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.message {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: rgba(6, 251, 128, 0.1);
+  border-radius: 8px;
+  border-left: 3px solid #06fb80;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.username {
+  font-weight: 600;
+  color: #06fb80;
+}
+
+.timestamp {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.message-text {
+  color: #333;
+  line-height: 1.4;
+}
+
+.shoutbox-input {
+  display: flex;
+  padding: 15px 20px;
+  background-color: #f5f5f5;
+  border-top: 1px solid #ddd;
+  gap: 10px;
+}
+
+.shoutbox-input input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+}
+
+.shoutbox-input input:focus {
+  border-color: #06fb80;
+  box-shadow: 0 0 0 2px rgba(6, 251, 128, 0.2);
+}
+
+.shoutbox-input button {
+  padding: 10px 20px;
+  background-color: #06fb80;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.shoutbox-input button:hover {
+  background-color: #05e673;
+}
+
+.shoutbox-input button:active {
+  transform: translateY(1px);
+} 

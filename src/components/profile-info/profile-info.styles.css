@@ -1,0 +1,29 @@
+.profile-info{
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.username-title{
+    font-size: 3em;
+    font-weight: bold;
+}
+
+.profile-info-details{
+    flex: 1 1 240px;
+    min-width: 220px;
+}
+
+@media (max-width: 400px){
+    .profile-info{
+        align-items: center;
+        justify-content: center;
+        margin-top: 15px;
+        text-align: center;
+    }
+
+    .profile-info-details{
+        min-width: auto;
+    }
+}

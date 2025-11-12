@@ -1,0 +1,11 @@
+.profile-banner{
+    height: 400px;
+    width: 100%;
+    background-color: black;
+}
+
+@media (max-width: 400px) {
+    .profile-banner{
+        display: none;
+    }  
+}

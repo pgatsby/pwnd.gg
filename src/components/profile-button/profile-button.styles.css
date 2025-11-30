@@ -11,8 +11,9 @@
   cursor: pointer;
 }
 
-@media (max-width: 400px) {
-  .profile-button {
-    width: 8 0px;
+@media (max-width: 550px) {
+  .profile-button{
+    max-width: 130px;
+    margin: 0;
   }
 }

@@ -18,27 +18,28 @@ export default async function BlogPostPage({
     <div className="profile">
       <Navbar />
       <ProfileBanner />
-      <div className="profile-details">
-        <ProfileInfo
-          username={slug}
-          bio={"I play video games"}
-          location={"Los Angeles, CA"}
-        />
+      <div className="container">
+        <div className="profile-details">
+          <ProfileInfo
+            username={slug}
+            bio={"I play video games"}
+            location={"Los Angeles, CA"}
+          />
 
-        <div className="profile-buttons">
-          <ProfileButton>Following</ProfileButton>
-          <ProfileButton>Message</ProfileButton>
-          <ProfileButton>Donate</ProfileButton>
+          <div className="profile-buttons">
+            <ProfileButton>Following</ProfileButton>
+            <ProfileButton>Message</ProfileButton>
+            <ProfileButton>Donate</ProfileButton>
+          </div>
         </div>
-      </div>
-      <div className="profile-content">
-        <Shoutbox />
-        <div className="profile-info-section">
-          <InfoBoard title="Config" body="I like to play video games." />
-          <InfoBoard title="Uploads" body="0" />
-          <InfoBoard title="Achievements" body="120" />
+        <div className="profile-content">
+          <Shoutbox />
+          <div className="profile-info-section">
+            <InfoBoard title="Config" body="I like to play video games." />
+            <InfoBoard title="Uploads" body="0" />
+            <InfoBoard title="Achievements" body="120" />
+          </div>
         </div>
-
       </div>
     </div>
   );

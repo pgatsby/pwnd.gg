@@ -1,29 +1,28 @@
 .profile-info{
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 20px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 .username-title{
-    font-size: 3em;
+    font-size: clamp(1.75rem, 3vw, 3rem);
     font-weight: bold;
 }
 
 .profile-info-details{
     flex: 1 1 240px;
-    min-width: 220px;
+    min-width: 0;
 }
 
 @media (max-width: 400px){
     .profile-info{
-        align-items: center;
-        justify-content: center;
+        align-items: flex-start;
         margin-top: 15px;
-        text-align: center;
+        gap: 12px;
     }
 
     .profile-info-details{
-        min-width: auto;
+        min-width: 0;
     }
 }

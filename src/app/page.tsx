@@ -2,21 +2,94 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useStackApp } from "@stackframe/stack";
+import { KnownErrors } from "@stackframe/stack-shared";
 import styles from "./page.module.css";
+
+const getReadableError = (error: unknown) => {
+  if (!error) return "Something went wrong. Please try again.";
+  if (typeof error === "string") return error;
+  if (typeof error === "object" && "message" in error && typeof (error as { message?: string }).message === "string") {
+    return (error as { message: string }).message;
+  }
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "humanReadableMessage" in error &&
+    typeof (error as { humanReadableMessage?: string }).humanReadableMessage === "string"
+  ) {
+    return (error as { humanReadableMessage: string }).humanReadableMessage;
+  }
+  return "Unable to complete that request. Please try again.";
+};
+
+const profileReturnUrl = () =>
+  typeof window === "undefined" ? undefined : `${window.location.origin}/profile`;
+
+const shouldAttemptAutoCreate = (error: unknown) =>
+  error instanceof KnownErrors.EmailPasswordMismatch || error instanceof KnownErrors.UserNotFound;
 
 export default function Home() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const stackApp = useStackApp();
 
-  const handleAuth = (event: FormEvent<HTMLFormElement> | FormEvent<HTMLButtonElement>) => {
+  const [credentialEmail, setCredentialEmail] = useState("");
+  const [credentialPassword, setCredentialPassword] = useState("");
+  const [credentialError, setCredentialError] = useState("");
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+
+  const sendToProfile = () => router.push("/profile");
+
+  const handleCredentialAuth = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (email.trim().toLowerCase() === "test@test.com" && password === "password") {
-      setError("");
-      router.push("/profile/Tester");
-    } else {
-      setError("Invalid credentials. Try test@test.com / password.");
+    setCredentialError("");
+    setIsAuthenticating(true);
+
+    const email = credentialEmail.trim();
+
+    try {
+      const loginResult = await stackApp.signInWithCredential({
+        email,
+        password: credentialPassword,
+        noRedirect: true,
+      });
+
+      if (loginResult.status === "ok") {
+        sendToProfile();
+        return;
+      }
+
+      if (!shouldAttemptAutoCreate(loginResult.error)) {
+        setCredentialError(getReadableError(loginResult.error));
+        return;
+      }
+
+      const signupResult = await stackApp.signUpWithCredential({
+        email,
+        password: credentialPassword,
+        noRedirect: true,
+        noVerificationCallback: true,
+      });
+
+      if (signupResult.status === "ok") {
+        sendToProfile();
+      } else {
+        setCredentialError(getReadableError(signupResult.error));
+      }
+    } catch (err) {
+      setCredentialError(getReadableError(err));
+    } finally {
+      setIsAuthenticating(false);
+    }
+  };
+
+  const handleOAuth = async (provider: "google" | "apple") => {
+    setCredentialError("");
+    try {
+      const returnTo = profileReturnUrl();
+      await stackApp.signInWithOAuth(provider, returnTo ? { returnTo } : undefined);
+    } catch (err) {
+      setCredentialError(getReadableError(err));
     }
   };
 
@@ -34,15 +107,23 @@ export default function Home() {
 
       <section className={styles.authSection}>
         <div className={styles.brandMark}>PWND.GG</div>
-        <h1>Happening now</h1>
-        <h2>Join the arena today.</h2>
+        <h1>Sign in to PWND.GG</h1>
+        <h2>We’ll create your account automatically if you’re new.</h2>
 
         <div className={styles.socialActions}>
-          <button className={`${styles.socialButton} ${styles.google}`}>
-            Sign up with Google
+          <button
+            type="button"
+            className={`${styles.socialButton} ${styles.google}`}
+            onClick={() => handleOAuth("google")}
+          >
+            Continue with Google
           </button>
-          <button className={`${styles.socialButton} ${styles.apple}`}>
-            Sign up with Apple
+          <button
+            type="button"
+            className={`${styles.socialButton} ${styles.apple}`}
+            onClick={() => handleOAuth("apple")}
+          >
+            Continue with Apple
           </button>
         </div>
 
@@ -52,14 +133,14 @@ export default function Home() {
           <span />
         </div>
 
-        <form className={styles.signupForm} onSubmit={handleAuth}>
+        <form className={styles.signupForm} onSubmit={handleCredentialAuth}>
           <label>
             Email
             <input
               type="email"
               placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={credentialEmail}
+              onChange={(e) => setCredentialEmail(e.target.value)}
               required
             />
           </label>
@@ -68,27 +149,27 @@ export default function Home() {
             <input
               type="password"
               placeholder="Create a password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={credentialPassword}
+              onChange={(e) => setCredentialPassword(e.target.value)}
               required
             />
           </label>
-          <button type="submit" className={styles.primaryButton}>
-            Create account
+          <button type="submit" className={styles.primaryButton} disabled={isAuthenticating}>
+            {isAuthenticating ? "Working..." : "Continue"}
           </button>
         </form>
 
-        {error && <p className={styles.errorMessage}>{error}</p>}
+        {credentialError && <p className={styles.errorMessage}>{credentialError}</p>}
 
         <p className={styles.terms}>
           By signing up, you agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
         </p>
 
         <div className={styles.loginCard}>
-          <p>Already have an account?</p>
-          <button type="button" className={styles.secondaryButton} onClick={handleAuth}>
-            Sign in
-          </button>
+          <p>
+            Already part of the community? Enter your credentials above to sign in immediately. New
+            here? Submit the same form and we’ll spin up your account automatically.
+          </p>
         </div>
       </section>
     </div>

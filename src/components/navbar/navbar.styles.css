@@ -69,6 +69,27 @@
   color: #0070f3;
 }
 
+.nav-logout-button {
+  border: 1px solid #0f172a;
+  background: transparent;
+  color: #0f172a;
+  border-radius: 999px;
+  padding: 0.4rem 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav-logout-button:hover:not(:disabled) {
+  background: #0f172a;
+  color: #fff;
+}
+
+.nav-logout-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* --- Mobile Styling --- */
 @media (max-width: 768px) {
   .nav-links {

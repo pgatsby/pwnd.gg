@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
+    "@stackframe/stack": "^2.8.54",
+    "@stackframe/stack-shared": "^2.8.54",
     "next": "15.3.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

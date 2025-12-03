@@ -4,7 +4,6 @@ import Navbar from "@/components/navbar/navbar";
 import ProfileInfo from "@/components/profile-info/profile-info";
 import ProfileButton from "@/components/profile-button/profile-button";
 import InfoBoard from "@/components/info-board/info-board";
-import Feed from "@/components/feed/feed";
 import Shoutbox from "@/components/shoutbox/shoutbox";
 
 export default async function BlogPostPage({

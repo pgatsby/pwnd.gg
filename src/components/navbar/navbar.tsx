@@ -1,18 +1,31 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { useUser } from '@stackframe/stack';
 import './navbar.styles.css';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const user = useUser();
+  const [isSigningOut, setIsSigningOut] = useState(false);
 
   // Close menu when navigating
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  const handleSignOut = async () => {
+    if (!user) return;
+    try {
+      setIsSigningOut(true);
+      await user.signOut();
+    } finally {
+      setIsSigningOut(false);
+    }
+  };
 
   return (
     <nav className="navbar">
@@ -43,6 +56,21 @@ export default function Navbar() {
         <li>
           <Link href="/about">About</Link>
         </li>
+        {user ? (
+          <li>
+            <button
+              className="nav-logout-button"
+              onClick={handleSignOut}
+              disabled={isSigningOut}
+            >
+              {isSigningOut ? 'Signing out…' : 'Log out'}
+            </button>
+          </li>
+        ) : (
+          <li>
+            <Link href="/handler/sign-in">Sign in</Link>
+          </li>
+        )}
       </ul>
     </nav>
   );
